@@ -17,7 +17,6 @@ Este backend está construido en **Django + Django REST Framework** y provee la 
 9. [API REST](#api-rest)
 10. [Testing](#testing)
 11. [Notas de Desarrollo](#notas-de-desarrollo)
-12. [Licencia](#licencia)
 
 ---
 
@@ -78,7 +77,8 @@ python manage.py createsuperuser
 
 # 7. Levanta el servidor
 python manage.py runserver
-
+```
+---
 
 ## 🔑 Variables de Entorno
 
@@ -351,8 +351,3 @@ Puedes ampliarlos para cada endpoint/modelo según necesidades.
 - Emails: Usa SMTP real; para pruebas puedes poner `EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'`.
 
 ---
-
-## 📜 Licencia
-
-[MIT License](LICENSE)  
-Puedes modificar, compartir y contribuir libremente.
