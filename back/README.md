@@ -84,6 +84,7 @@ python manage.py runserver
 
 Ejemplo en `.env.example` (¡no olvides crear tu propio archivo `.env`!):
 
+```
 DJANGO_SECRET_KEY=tu_clave_secreta
 RECAPTCHA_SECRET_KEY=tu_clave_recaptcha
 EMAIL_HOST=smtp.tuservidor.com
@@ -94,6 +95,8 @@ EMAIL_HOST_PASSWORD=tu_contraseña
 DEFAULT_FROM_EMAIL=usuario@tudominio.com
 BACKEND_DOMAIN=http://127.0.0.1:8000
 FRONTEND_DOMAIN=http://localhost:5173
+
+```
 
 > **Tip:** Nunca subas tu `.env` real al repo público.  
 > Usa `.env.example` para compartir el formato.
