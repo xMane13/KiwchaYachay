@@ -106,6 +106,7 @@ FRONTEND_DOMAIN=http://localhost:5173
 ## 📁 Estructura de Carpetas
 
 ```
+
 kiwcha_repo/
 │
 ├── core/                  # App principal: modelos, views, serializers, etc.
