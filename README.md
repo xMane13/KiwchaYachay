@@ -117,9 +117,7 @@ npm run build
 
 ### 4. Configura Apache para servir backend y frontend
 
-Crea un archivo, por ejemplo:
-```
-/etc/httpd/conf.d/kiwcha.conf```
+Crea un archivo, por ejemplo: `/etc/httpd/conf.d/kiwcha.conf`
 
 ```
 <VirtualHost *:80>
