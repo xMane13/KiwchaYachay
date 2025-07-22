@@ -93,3 +93,83 @@ sudo dnf install -y epel-release
 sudo dnf install -y python3-mod_wsgi  # Puede ser python3-mod_wsgi o mod_wsgi dependiendo del repositorio
 ```
 > Si python3-mod_wsgi no existe, instala con pip install mod_wsgi y compila manualmente, pero en la mayoría de los casos el paquete oficial está disponible.
+
+### 2. Configura el backend (Django)
+
+```
+cd /ruta/a/tu/proyecto/backend
+python3 -m venv venv
+source venv/bin/activate
+pip install -r requirements.txt
+cp .env.example .env  # Rellena tus variables
+python manage.py migrate
+python manage.py collectstatic  # Si usas archivos estáticos
+```
+
+### 3. Compila el Frontend
+
+```
+cd /ruta/a/tu/proyecto/frontend
+npm install
+npm run build
+# Archivos finales en frontend/dist/
+```
+
+### 4. Configura Apache para servir backend y frontend
+
+Crea un archivo, por ejemplo:
+```
+/etc/httpd/conf.d/kiwcha.conf```
+
+```
+<VirtualHost *:80>
+    ServerName tu_dominio.com
+
+    # --- Django Backend por WSGI ---
+    WSGIDaemonProcess kiwcha python-path=/ruta/a/tu/proyecto/backend python-home=/ruta/a/tu/proyecto/backend/venv
+    WSGIProcessGroup kiwcha
+    WSGIScriptAlias /api /ruta/a/tu/proyecto/backend/kiwcha_repo/wsgi.py
+
+    <Directory /ruta/a/tu/proyecto/backend>
+        <Files wsgi.py>
+            Require all granted
+        </Files>
+    </Directory>
+
+    # --- Frontend estático (React/Vite) ---
+    Alias /static/ /ruta/a/tu/proyecto/frontend/dist/
+    <Directory /ruta/a/tu/proyecto/frontend/dist>
+        Require all granted
+        Options -Indexes
+    </Directory>
+
+    # (Opcional) SPA fallback: todo lo que no sea /api lo manda al frontend
+    RewriteEngine On
+    RewriteCond %{REQUEST_URI} !^/api
+    RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteRule ^(.*)$ /static/index.html [L]
+
+    # Archivos estáticos de Django (si usas)
+    Alias /backend_static/ /ruta/a/tu/proyecto/backend/static/
+    <Directory /ruta/a/tu/proyecto/backend/static>
+        Require all granted
+    </Directory>
+</VirtualHost>
+```
+
+> Cambia ```/ruta/a/tu/proyecto``` por tu ruta real.
+
+### 5. Habilita y reinicia Apache
+
+```
+
+sudo systemctl enable httpd
+sudo systemctl restart httpd
+```
+> Si tienes firewall, permite el puerto 80 y 443 (para SSL):
+ ```
+ sudo firewall-cmd --permanent --add-service=http
+sudo firewall-cmd --permanent --add-service=https
+sudo firewall-cmd --reload
+
+```
