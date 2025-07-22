@@ -155,7 +155,7 @@ Crea un archivo, por ejemplo: `/etc/httpd/conf.d/kiwcha.conf`
 </VirtualHost>
 ```
 
-> Cambia ```/ruta/a/tu/proyecto``` por tu ruta real.
+> Cambia `/ruta/a/tu/proyecto` por tu ruta real.
 
 ### 5. Habilita y reinicia Apache
 
