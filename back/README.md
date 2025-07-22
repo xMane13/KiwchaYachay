@@ -105,6 +105,7 @@ FRONTEND_DOMAIN=http://localhost:5173
 
 ## 📁 Estructura de Carpetas
 
+```
 kiwcha_repo/
 │
 ├── core/                  # App principal: modelos, views, serializers, etc.
@@ -131,12 +132,15 @@ kiwcha_repo/
 ├── .env.example           # Variables de entorno ejemplo
 └── manage.py
 
+```
+
 ---
 
 ## 🏗️ Modelos Principales
 
 ### 1. CustomUser
 
+```
 class CustomUser(AbstractBaseUser, PermissionsMixin):
     email         = models.EmailField(unique=True)
     first_name    = models.CharField(max_length=30, blank=True)
@@ -148,11 +152,13 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
 
 - Autenticación personalizada vía email.
 - Relación con Material, Favorito, Comentario, Calificación.
+```
 
 ---
 
 ### 2. Material
 
+```
 class Material(models.Model):
     titulo         = models.CharField(max_length=200)
     descripcion    = models.TextField(blank=True)
@@ -165,7 +171,7 @@ class Material(models.Model):
     fecha_creacion = models.DateTimeField(auto_now_add=True)
     thumbnail_blob = models.BinaryField(blank=True, null=True)
     thumbnail_tipo = models.CharField(max_length=100, blank=True, null=True)
-
+```
 - Puede ser archivo (pdf, imagen, presentación) o video.
 - Genera miniaturas automáticas.
 
@@ -173,6 +179,7 @@ class Material(models.Model):
 
 ### 3. Favorito
 
+```
 class Favorito(models.Model):
     usuario        = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='favoritos')
     material       = models.ForeignKey('Material', on_delete=models.CASCADE, related_name='favoritos')
@@ -180,26 +187,26 @@ class Favorito(models.Model):
 
     class Meta:
         unique_together = ('usuario', 'material')
-
+```
 - Relaciona usuarios con materiales favoritos.
 - Un usuario no puede tener el mismo material dos veces en favoritos.
 
 ---
 
 ### 4. Comentario
-
+```
 class Comentario(models.Model):
     usuario  = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     material = models.ForeignKey('Material', on_delete=models.CASCADE, related_name='comentarios')
     texto    = models.TextField()
     fecha    = models.DateTimeField(auto_now_add=True)
-
+```
 - Permite comentar materiales.
 
 ---
 
 ### 5. Calificacion
-
+```
 class Calificacion(models.Model):
     usuario  = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     material = models.ForeignKey('Material', on_delete=models.CASCADE, related_name='calificaciones')
@@ -208,7 +215,7 @@ class Calificacion(models.Model):
 
     class Meta:
         unique_together = ('usuario', 'material')
-
+```
 - Puntaje de 1 a 5 estrellas a materiales.
 
 ---
