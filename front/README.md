@@ -68,7 +68,6 @@ src/
 ## 🌐 Variables de Entorno
 
 - `VITE_RECAPTCHA_SITE_KEY` — Tu clave pública de Google reCAPTCHA (obligatorio).
-- (Opcional) Si alguna vez agregas más variables, documenta aquí.
 
 ---
 
