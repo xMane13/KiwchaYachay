@@ -148,6 +148,7 @@ const MaterialDetail: React.FC = () => {
   };
 
   const isFicha = material?.tipo === 'ficha';
+  const isPresentacion = material?.tipo === 'presentacion';
   const isVideo = material?.tipo === 'video';
   const pdfUrl = material?.archivo_url || '';         
   const thumbnailUrl = material?.thumbnail_url || '';
@@ -203,7 +204,7 @@ const MaterialDetail: React.FC = () => {
             <p className="text-gray-700 mb-6 text-lg">{material.descripcion}</p>
 
             {/* Miniatura PDF */}
-            {isFicha && thumbnailUrl && (
+            {(isFicha ||isPresentacion) && thumbnailUrl && (
               <div className="w-full flex flex-col items-start mb-6">
                 <img
                   src={thumbnailUrl}
@@ -288,7 +289,7 @@ const MaterialDetail: React.FC = () => {
             )}
 
             {/* Descarga + tu calificación para PDFs */}
-            {(pdfUrl && isFicha) && (
+            {(pdfUrl && (isFicha||isPresentacion)) && (
               <div className="flex flex-col sm:flex-row items-center gap-8 w-full mt-2 mb-4">
                 <a
                   href={pdfUrl}

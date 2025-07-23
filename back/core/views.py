@@ -8,7 +8,7 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 from django.contrib.auth import authenticate, get_user_model
 from .utils import send_verification_email, send_password_reset_email
-from .permissions import IsOwnerOrReadOnly
+from .permissions import IsOwnerOrReadOnly, EsAutorComentario
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework.permissions import AllowAny
 from django.http import HttpResponse, Http404
@@ -255,7 +255,7 @@ class FavoritoViewSet(viewsets.ModelViewSet):
 
 class ComentarioViewSet(viewsets.ModelViewSet):
     serializer_class = ComentarioSerializer
-    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
+    permission_classes = [permissions.IsAuthenticatedOrReadOnly, EsAutorComentario]
 
     def get_queryset(self):
         material_id = self.request.query_params.get('material')
@@ -266,6 +266,7 @@ class ComentarioViewSet(viewsets.ModelViewSet):
 
     def perform_create(self, serializer):
         serializer.save(usuario=self.request.user)
+
 
 #----------------------Calificacion-------------------------
 class CalificacionViewSet(viewsets.ModelViewSet):

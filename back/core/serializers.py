@@ -147,9 +147,12 @@ class MaterialSerializer(serializers.ModelSerializer):
         ]
 
     def validate(self, data):
-        if not data.get('archivo_blob') and not data.get('video_url'):
+        archivo_blob = data.get('archivo_blob', getattr(self.instance, 'archivo_blob', None))
+        video_url = data.get('video_url', getattr(self.instance, 'video_url', None))
+        if not archivo_blob and not video_url:
             raise serializers.ValidationError("Debes subir un archivo (como base64) o ingresar una URL de video.")
         return data
+
 
     def create(self, validated_data):
         archivo_blob_b64 = validated_data.pop('archivo_blob', None)
@@ -216,6 +219,13 @@ class FavoritoSerializer(serializers.ModelSerializer):
         fields = ['id', 'usuario', 'material', 'fecha_agregado']
         read_only_fields = ['id', 'usuario', 'fecha_agregado']
 
+    def validate(self, data):
+        usuario = self.context['request'].user
+        material = data['material']
+        if Favorito.objects.filter(usuario=usuario, material=material).exists():
+            raise serializers.ValidationError("Este material ya está en tus favoritos.")
+        return data
+
 
 #----------------------Comentario---------------------
 
@@ -231,7 +241,7 @@ class ComentarioSerializer(serializers.ModelSerializer):
         read_only_fields = ['id', 'usuario', 'usuario_email', 'nombre_usuario', 'fecha']
 
     def get_nombre_usuario(self, obj):
-        nombre = obj.usuario.first_name or obj.usuario.username or obj.usuario.email
+        nombre = obj.usuario.first_name or obj.usuario.email
         apellido = getattr(obj.usuario, "last_name", "")
         return f"{nombre} {apellido}".strip()
 

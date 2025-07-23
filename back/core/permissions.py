@@ -8,3 +8,8 @@ class IsOwnerOrReadOnly(permissions.BasePermission):
             return True
         # Solo el dueño puede editar/borrar
         return obj.usuario == request.user
+
+#Solo el duenio puede eliminar su comentario
+class EsAutorComentario(permissions.BasePermission):
+    def has_object_permission(self, request, view, obj):
+        return obj.usuario == request.user
